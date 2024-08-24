@@ -1,0 +1,122 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Create Group for {{course_id.title}}</h1>
+</header>
+
+
+<style>
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 400px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 0px
+}
+
+.box > div label{
+    color: white;
+}    
+
+
+
+.form-label {
+  font-weight: 600;
+}
+
+.input-group-text {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.input-group-text:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+
+th,tr{
+    text-align: center;
+}
+
+</style>
+
+    <div class="box">
+        <div class="p-3 mb-5">
+
+            <form method="POST" action="/Add_Group/{{course_id.id}}" enctype="multipart/form-data">
+                {%csrf_token%}
+                <label class="form-label">Group Name</label>
+            <input type="text" class="form-control" name="name"> 
+
+            <br>   
+
+            <input type="submit" class="btn btn-success" name="">
+            </form>
+            
+        </div>
+    </div>
+
+
+
+    {%if details%}
+
+    <div class="container">
+        <table class="table table-dark table-hover table-stripped table-bordered">
+            <thead>
+                <th>Group Name</th>
+                <th >Action</th>
+            </thead>
+
+            <tbody>
+                {%for i in details%}
+                <tr>
+                    <td>{{i.group_name}}</td>
+                    <td>
+                        <a href="/View_Students/{{i.course_id.id}}/{{i.id}}" class="btn btn-warning">View Students</a>
+                        &nbsp;
+                        <a href="/View_Group_Members/{{i.id}}" class="btn btn-info">View Members</a>
+                        <a href="/View_Chat/{{i.id}}" class="btn btn-info">View Chat</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    {%endif%}
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Course Management</h1>
+</header>
+
+
+<style>
+.header1{
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 20px;
+            text-align: left;
+            
+        }
+
+
+</style>
+
+
+<div class="container">
+    <div class="row" style="padding-top:50px;">
+        {%for i in details%}
+        <div class="col-sm-4 mb-3 mb-sm-0">
+            <div class="card bg-dark"  style="min-height: 250px;">
+                  <div class="card-body">
+                        <header class="header1" >
+                            <h2>{{i.title}}</h2>
+                        </header>
+                        <p class="card-tex text-white">{{i.description}}</p>
+                        <a  href="/Add_Lectures/{{i.id}}" class="btn btn-primary">Lectures</a>
+                        <a  href="/Add_Assignments/{{i.id}}" class="btn btn-primary">Assignments</a>
+                        <a  href="/Add_Quiz/{{i.id}}" class="btn btn-primary">Quizzes</a>
+                        <a  href="/Student_Progress/{{i.id}}" class="btn btn-primary">Progress</a>
+
+                        <a  href="/Show_Monthly_graph/{{i.id}}" class="btn btn-primary">Graph</a>
+                  </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+
+
+
+</div>
+
+{% endblock %}

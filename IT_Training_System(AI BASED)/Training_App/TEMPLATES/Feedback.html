@@ -1,0 +1,65 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<style>
+        .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 5px
+}
+
+.box > div label{
+    color: white;
+}
+
+
+</style>
+
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  height:650px; width:100%;">
+  <header>
+    <h1>Feedback</h1>
+  </header>
+    <div class="box">
+        <div class="shadow-lg p-3 mb-5 ">
+             <center><h3 style="color: white;">Feedback</h3> </center>
+             <hr>
+            <form method="POST" action="/Feedback/" enctype="multipart/form-data" style="padding:25px;">
+                {% csrf_token %}
+              <div class="row">
+                  <div class="col-md-12">
+                    <label for="validationCustomUsername" class="form-label">Enter Feedback</label>
+                    <textarea class="form-control" rows="4" name="feedback">
+                      
+                    </textarea>
+                  </div>
+              </div>
+              <br>
+              <div class="row">
+                  <div class="col-md-12" style="display: flex;justify-content: center;">
+                      <input class="btn btn-secondary" type="submit" name="submit">
+                  </div>
+              </div>
+              <br>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

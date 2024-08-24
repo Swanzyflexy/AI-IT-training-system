@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}
+      <script>alert("{{ message }}")</script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% load static %}
+
+<div style="min-height:687px;height:auto;">
+
+  <style>
+     .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div {
+  width: 700px;
+  height: auto;
+  background-color: #36454F;
+  border-radius: 5px;
+}
+
+.box > div h3{
+    color: white;
+}
+  </style>
+
+  <header>
+    <h1>Progress Report</h1>
+  </header>
+
+  <div class="box">
+     <div class="p-3 mb-5">
+       <div class="container">
+       <!-- Quiz Progress -->
+       <h3>Quiz Progress</h3>
+        <div class="progress mb-3">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ quiz_percentage }}%;" aria-valuenow="{{ quiz_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ quiz_percentage|floatformat:"0" }}%</div>
+        </div>
+
+        <!-- Assignments Progress -->
+        <h3>Assignments Progress</h3>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ assignment_percentage }}%;" aria-valuenow="{{ assignment_percentage }}" aria-valuemin="0" aria-valuemax="100">{{ assignment_percentage|floatformat:"0" }}%</div>
+        </div>
+  
+      </div>
+     </div>
+  </div>
+
+</div>
+{% endblock %}

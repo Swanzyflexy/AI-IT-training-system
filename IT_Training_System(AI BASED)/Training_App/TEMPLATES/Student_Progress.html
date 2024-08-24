@@ -1,0 +1,65 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<style>
+        .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 5px
+}
+
+.box > div label{
+    color: white;
+}
+
+
+</style>
+
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  height:650px; width:100%;">
+  <header>
+    <h1>Enrolled Students</h1>
+  </header>
+    <div class="box">
+        <div class="shadow-lg p-3 mb-5 ">
+            <form method="POST" action="" enctype="multipart/form-data" style="padding:25px;">
+                {% csrf_token %}
+              <table class="table table-dark table-hover table-stripped table-bordered">
+                <thead>
+                  <th>Student Name</th>
+                  <th>Progress</th>
+                </thead>
+
+                <tbody>
+                  {%for i in details%}
+                  <tr>
+                    <td>{{i.student.full_name}}</td>
+                    <td>
+                      <a href="/Progress_Tracking_Teacher/{{i.student.id}}/{{course_id}}">Check Progress</a>
+                    </td>
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

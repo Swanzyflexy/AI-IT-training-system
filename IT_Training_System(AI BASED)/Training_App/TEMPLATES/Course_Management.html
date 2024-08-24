@@ -1,0 +1,309 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url(''); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+
+
+<header>
+    <h1>Course Management</h1>
+</header>
+
+
+<style>
+th,tr{
+    text-align: center;
+}
+</style>
+
+
+<!-- Modal for view button -->
+<!-- View Modal -->
+<div style="background-image: url('/media/modal.jpg');" class="modal fade" id="myModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="bg-warning" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Course Details</h5> 
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div  class="modal-body">
+             <div class="container">
+        <form class="row g-3" method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+              <div class="col-md-6">
+                    <label  class="form-label">ID</label>
+                    <input type="text" class="form-control" name="updateid" id="updateid"  readonly>
+              </div>
+
+              <div class="col-md-6">
+                    <label  class="form-label">Title</label>
+                    <input type="text" class="form-control" name="updatename" id="updatename"  readonly>
+              </div>
+
+              <div class="col-md-12">
+                    <label for="inputPassword4" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="updateage" id="updateage"  readonly>
+
+                
+              </div>
+
+              <div class="col-12">
+                    <label for="inputAddress" class="form-label">Level</label>
+                    <input type="text" class="form-control"  
+                    name="updategender" id="updategender"   readonly>
+              </div>
+
+
+              <div class="col-md-12">
+                  <label class="form-label">Teacher Assigned</label>
+                  <input type="text" class="form-control" id="phone" name="" readonly>
+              </div>
+
+              <div class="col-md-12">
+                  <label class="form-label">Total Allotment</label>
+                  <input type="text" class="form-control" id="birth_date" name="" readonly>
+              </div>
+      
+
+
+
+
+
+
+        </form>
+    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- Modal for Update button -->
+<!-- View Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Course Details</h5> 
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             <div class="container">
+        <form class="row g-3" method="POST" action="/Update_Course/" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+            <div class="col-md-6">
+                    <label  class="form-label">ID</label>
+                    <input type="text" class="form-control" name="viewid" id="viewid"  readonly>
+              </div>
+
+              <div class="col-md-6">
+                    <label  class="form-label">Title</label>
+                    <input type="text" class="form-control" name="viewname" id="viewname"  required>
+              </div>
+
+              <div class="col-md-12">
+                    <label for="inputPassword4" class="form-label">Description</label>
+                    <input type="text" class="form-control" name="viewage" id="viewage"  required>
+
+                
+              </div>
+
+              <div class="col-md-6">
+                    <label for="inputAddress" class="form-label">Level</label>
+                    <input type="text" class="form-control"  
+                    name="viewaddress" id="viewaddress"   readonly>
+              </div>
+
+              <div class="col-md-6">
+                  <label class="form-label">Level</label>
+                    <select name="level" class="form-select">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+              </div>
+
+
+              <div class="col-md-6">
+                  <label class="form-label">Teacher Assigned</label>
+                  <input type="text" class="form-control" id="viewphone" name="phone" readonly>
+              </div>
+
+
+              <div class="col-md-6">
+                  <label class="form-label">Teacher</label>
+                         <select name="teacher" class="form-select">
+                             {%for i in teachers%}
+                             <option value="{{i.id}}">{{i.full_name}}</option>
+                             {%endfor%}
+                         </select>
+              </div>
+
+              <div class="col-md-12">
+                  <label class="form-label">Total Allotment</label>
+                  <input type="text" class="form-control" id="viewbirth_date"  readonly>
+              </div>
+            <input class="btn btn-secondary" type="submit"  name="">
+
+        </form>
+    </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------- -->
+
+
+<div class="container">
+    <div style="display:flex;justify-content: right;align-content: right;padding-top: 20px;">
+      <a  href="/Add_Course/" class="btn btn-info"> Add Course <img src="/media/online-learning.png" height="30px">
+      </a>
+       <a  href="/Manage_Category/" class="btn btn-info">Manage Category<img src="/media/online-learning.png" height="30px">
+      </a>
+    </div>
+
+    <br>
+    <br>
+
+    <table class="table table-dark table-hover table-stripped table-bordered">
+        <thead>
+            <th>Course ID</th>
+            <th>Course Title</th>
+            <th>Course Description</th>
+            <th>Course Level</th>
+            <th>Course Teacher</th>
+            <th>Course Enrollment Count</th>
+            <th colspan="3">Actions</th>
+            
+        </thead>
+
+        <tbody>
+            {%for i in details%}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>{{i.title}}</td>
+                <td>{{i.description}}</td>
+                <td>{{i.level}}</td>
+                <td>{{i.teacher.full_name}}</td>
+                <td>{{i.enrollment_count}}</td>
+                <td>
+                        <input type="button" class="btn btn-secondary" id="{{i.id}}
+                                                                            ${{i.title}}
+                                                                            ${{i.description}}
+                                                                            ${{i.level}}
+                                                                            ${{i.teacher.full_name}}
+                                                                            ${{i.enrollment_count}}"
+                             value="View" onclick="View(this)" style="width: 100%;">
+
+                </td>
+                        
+                <td>
+                        <input type="button" class="btn btn-warning "id="{{i.id}}
+                                                                            ${{i.title}}
+                                                                            ${{i.description}}
+                                                                            ${{i.level}}
+                                                                            ${{i.teacher.full_name}}
+                                                                            ${{i.enrollment_count}}"
+                             value="Update" onclick="Update(this)" style="width: 100%;">
+                </td>
+
+                <td >
+                    <a type="button" class="btn btn-danger" href="/Delete_Course/{{i.id}}" style="width: 100%;">Delete</a>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+    function View(me){
+        $('#myModal1').modal('show');
+        var id          = me.id;
+        var str         = id.split("$");
+        var ids         = str[0];
+        var title        = str[1];
+        var description         = str[2];
+        var level      = str[3];
+        var full_name      = str[4];
+        var enrollment_count      = str[5];
+      
+
+
+        console.log("id :",ids)
+        console.log("title :",title)
+        console.log("description :",description)
+        console.log("level :",level)
+        console.log("full_name :",full_name)
+        console.log("enrollment_count :",enrollment_count)
+       
+       
+       
+
+        document.getElementById("updateid").value       = ids;
+        document.getElementById("updatename").value     = title;
+        document.getElementById("updateage").value      = description;
+        document.getElementById("updategender").value   = level;
+        document.getElementById("phone").value  = full_name;
+        document.getElementById("birth_date").value   = enrollment_count;
+       
+        
+    }
+
+
+ function Update(me){
+        $('#myModal2').modal('show');
+        var id          = me.id;
+        var str         = id.split("$");
+        var ids         = str[0];
+        var title        = str[1];
+        var description         = str[2];
+        var level      = str[3];
+        var full_name      = str[4];
+        var enrollment_count      = str[5];
+      
+
+
+        console.log("id :",ids)
+        console.log("title :",title)
+        console.log("description :",description)
+        console.log("level :",level)
+        console.log("full_name :",full_name)
+        console.log("enrollment_count :",enrollment_count)
+       
+
+        document.getElementById("viewid").value       = ids;
+        document.getElementById("viewname").value     = title;
+        document.getElementById("viewage").value      = description;
+        document.getElementById("viewaddress").value   = level;
+        document.getElementById("viewphone").value  = full_name;
+        document.getElementById("viewbirth_date").value   = enrollment_count;
+    
+
+        
+        
+    }
+
+    </script>
+
+
+
+{% endblock %}

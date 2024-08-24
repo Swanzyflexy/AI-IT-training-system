@@ -1,0 +1,79 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            <script>alert("{{ message }}")</script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% load static %}
+<style>
+    .quiz-container {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .question {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .options {
+        list-style-type: none;
+        padding: 0;
+    }
+    .option {
+        margin-bottom: 5px;
+    }
+</style>
+<div style="background-image: url('/media/.jpg'); background-repeat: no-repeat; background-size: cover; min-height: 687px; width: 100%; height: auto;">
+    <header>
+        <h1>View Quiz</h1>
+    </header>
+    <div class="container">
+        <br>
+        <form id="quiz-form" action="/Submit_Quiz/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                {% for detail in details %}
+                    <div class="quiz-container">
+                        <p class="question">{{ detail.question }}</p>
+                        <ul class="options">
+                            <li class="option"><input type="radio" name="question_{{ detail.id }}" value="{{ detail.option1 }}">
+                            {{ detail.option1 }}</li>
+                            <li class="option"><input type="radio" name="question_{{ detail.id }}" value="{{ detail.option2 }}">
+                            {{ detail.option2 }}</li>
+                            <li class="option"><input type="radio" name="question_{{ detail.id }}" value="{{ detail.option3 }}">
+                            {{ detail.option3 }}</li>
+                            <li class="option"><input type="radio" name="question_{{ detail.id }}" value="{{ detail.option4 }}">
+                            {{ detail.option4 }}</li>
+                        </ul>
+                        <input type="hidden" name="answer_{{ detail.id }}" value="{{ detail.answer }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <input hidden type="text" value="{{ title_id }}" name="title_id">
+            <input hidden type="text" id="score" name="score">
+            <button class="btn btn-success" type="submit" onclick="calculateScore()">Submit Quiz</button>
+        </form>
+    </div>
+    <br>
+</div>
+<script>
+    function calculateScore() {
+        var form = document.getElementById('quiz-form');
+        var score = 0;
+        var totalQuestions = {{ details|length }};
+        {% for detail in details %}
+            var selectedOption = form.elements['question_{{ detail.id }}'].value;
+            var correctAnswer = '{{ detail.answer }}';
+            if (selectedOption === correctAnswer) {
+                score++;
+            }
+        {% endfor %}
+        document.getElementById('score').value = (score / totalQuestions) * 100;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Course Overview</h2>
+
+    {% if course_data %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Course Title</th>
+                        <th>Quizzes</th>
+                        <th>Assignments</th>
+                        <th>Student Assignment Submissions</th>
+                        <th>Quiz Submissions</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in course_data %}
+                    <tr>
+                        <td>{{ data.course.title }}</td>
+                        <td>
+                            <ul>
+                                {% for quiz in data.quizzes %}
+                                <li>{{ quiz.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for assignment in data.assignments %}
+                                <li>{{ assignment.id }}</li>  <!-- Assuming ID is a simple identifier for assignments -->
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for submission in data.assignments_submissions %}
+                                <li>{{ submission.student_file.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for submission in data.quiz_submissions %}
+                                <li>{{ submission.score }} - {{ submission.title_id.title }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <a href="{% url 'view_students' data.course.id %}" class="btn btn-warning btn-sm">View Students</a>
+                            <a href="{% url 'view_assignments' data.course.id %}" class="btn btn-info btn-sm">View Assignments</a>
+                            <a href="{% url 'view_quizzes' data.course.id %}" class="btn btn-info btn-sm">View Quizzes</a>
+                            <a href="{% url 'provide_feedback' data.course.id %}" class="btn btn-primary btn-sm">Provide Feedback</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No courses found. Please check if you are assigned to any courses.</p>
+    {% endif %}
+</div>
+{% endblock %}

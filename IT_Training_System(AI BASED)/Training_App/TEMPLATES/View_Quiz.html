@@ -1,0 +1,103 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Quiz</h1>
+</header>
+
+
+<style>
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 700px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 0px
+}
+
+.box > div label{
+    color: white;
+}    
+
+
+
+.form-label {
+  font-weight: 600;
+}
+
+.input-group-text {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.input-group-text:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+
+th,tr{
+    text-align: center;
+}
+
+</style>
+
+    <div class="container" style="padding-top:50px">
+        <table class="table table-dark table-hover table-stripped table-bordered">
+            <thead>
+                <th>Title ID</th>
+                <th>Course ID</th>
+                <th>Title</th>
+                <th>Action</th>
+            </thead>
+
+            <tbody>
+                {%for i in details%}
+                <tr>
+                    <td>{{i.id}}</td>
+                    <td>{{i.course_id}}</td>
+                    <td>{{i.title}}</td>
+                    <td>
+                        <a href="/View_Questions/{{i.id}}" style="width:100%;" class="btn btn-warning">View Questions</a>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+{% endblock %}

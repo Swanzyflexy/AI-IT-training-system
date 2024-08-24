@@ -1,0 +1,89 @@
+{
+    "intents": [
+        {
+            "tag": "registration",
+            "patterns": ["How do I register?", "Create an account", "Sign up", "Register as a student"],
+            "responses": ["To register, click on 'Sign Up' on the homepage, fill in the required details, and follow the prompts."]
+        },
+        {
+            "tag": "login",
+            "patterns": ["How do I log in?", "Sign in", "Login", "Access my account"],
+            "responses": ["To log in, click on 'Login' on the homepage, enter your credentials, and click 'Submit'."]
+        },
+        {
+            "tag": "course_browsing",
+            "patterns": ["What courses are available?", "Show me available courses", "List courses", "Search courses"],
+            "responses": ["You can browse available courses in the 'Courses' section. Use the search bar to find courses based on your interests and career goals."]
+        },
+        {
+            "tag": "course_enrollment",
+            "patterns": ["How do I enroll in a course?", "I want to enroll in a course", "Course enrollment process"],
+            "responses": ["To enroll in a course, browse the available courses, select the one you're interested in, and click 'Enroll'. If you need more assistance, let me know!"]
+        },
+        {
+            "tag": "course_details",
+            "patterns": ["Tell me about the course", "What are the prerequisites?", "Course schedule"],
+            "responses": ["You can view course descriptions, prerequisites, and schedules in the course details section."]
+        },
+        {
+            "tag": "attend_lectures",
+            "patterns": ["How do I attend lectures?", "Attend class", "Lecture access"],
+            "responses": ["You can attend lectures by accessing the course materials section and clicking on the 'Lectures' tab."]
+        },
+        {
+            "tag": "complete_assignments",
+            "patterns": ["How do I complete assignments?", "Submit homework", "Assignments"],
+            "responses": ["Assignments can be found under the 'Assignments' tab in your course. Complete them and submit by the due date."]
+        },
+        {
+            "tag": "participate_quizzes",
+            "patterns": ["How do I participate in quizzes?", "Take a quiz", "Quizzes"],
+            "responses": ["Quizzes can be accessed under the 'Quizzes' tab in your course. Make sure to complete them before the deadline."]
+        },
+        {
+            "tag": "course_content_interaction",
+            "patterns": ["How do I interact with course content?", "View readings", "Watch videos"],
+            "responses": ["You can interact with course content such as readings, videos, and tutorials under the 'Content' section of your course."]
+        },
+        {
+            "tag": "join_discussion_groups",
+            "patterns": ["How do I join discussion groups?", "Participate in discussions", "Discussion groups"],
+            "responses": ["You can join and participate in discussion groups through the 'Discussion' section of your course."]
+        },
+        {
+            "tag": "progress_tracking",
+            "patterns": ["How do I track my progress?", "Check my progress", "View progress"],
+            "responses": ["You can track your progress by visiting your dashboard where you can see completed modules, grades, and feedback."]
+        },
+        {
+            "tag": "receive_notifications",
+            "patterns": ["How do I get notifications?", "Upcoming deadlines", "Assignment reminders"],
+            "responses": ["You will receive notifications for upcoming deadlines, assignments, and exams on your dashboard and via email."]
+        },
+        {
+            "tag": "view_grades",
+            "patterns": ["How do I view my grades?", "Check my grades", "View grades"],
+            "responses": ["To view your grades, go to the 'Grades' section in your profile."]
+        },
+        {
+            "tag": "provide_feedback",
+            "patterns": ["How do I provide feedback?", "Give course feedback", "Submit feedback"],
+            "responses": ["You can submit feedback through the 'Feedback' section in your profile. Your input helps us improve!"]
+        },
+        {
+            "tag": "technical_support",
+            "patterns": ["I need technical support", "Technical issue", "Platform not working"],
+            "responses": ["Please describe your technical issue, and I'll assist you or connect you with support."]
+        },
+        {
+            "tag": "admin_queries",
+            "patterns": ["How do I contact the admin?", "Ask admin a question", "Get help from admin"],
+            "responses": ["You can contact the admin by visiting the 'Support' section and submitting your query."]
+        },
+        {
+            "tag": "reset_password",
+            "patterns": ["How do I reset my password?", "Forgot password", "Change my password"],
+            "responses": ["To reset your password, click on 'Forgot Password' on the login page and follow the instructions to reset it."]
+        }
+    ]
+}

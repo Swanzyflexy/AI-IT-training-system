@@ -1,0 +1,219 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}
+      <script>alert("{{ message }}")</script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% load static %}
+
+<head>
+    <style>
+          body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 80%;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        word-wrap: break-word;
+        max-width: 200px;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .action-links a {
+        margin-right: 10px;
+    }
+
+    .add-category {
+        display: block;
+        text-align: center;
+        margin: 20px 0;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+
+    .add-category:hover {
+        background-color: #218838;
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+        }
+    </style>
+    <script>
+        function confirmDelete(event, categoryName) {
+            event.preventDefault();
+            if (confirm('Are you sure you want to delete the category "' + categoryName + '"?')) {
+                window.location.href = event.target.href;
+            }
+        }
+
+        function openModal(categoryId, categoryName) {
+            document.getElementById('category_id').value = categoryId;
+            document.getElementById('category_name_display').innerText = categoryName;
+            document.getElementById('subcategoryModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('subcategoryModal').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Categories</h1>
+        <a href="{% url 'add_category' %}" class="add-category">Add New Category</a>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            {% for category in categories %}
+            <tr>
+                <td>{{ category.category_name }}</td>
+                <td>{{ category.category_description }}</td>
+                <td class="action-links">
+                    <a class="btn btn-secondary" href="{% url 'edit_category' category.id %}">Edit</a>
+                    <a class="btn btn-danger" href="{% url 'delete_category' category.id %}" onclick="confirmDelete(event, '{{ category.category_name }}')">Delete</a>
+                    <a  class="btn btn-light" href="{% url 'Manage_Subcategory' category.id %}">View Sub-Category</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- The Modal -->
+    <div id="subcategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add Subcategory to <span id="category_name_display"></span></h2>
+            <form method="post" action="{% url 'add_subcategory' %}">
+                {% csrf_token %}
+                <input type="hidden" id="category_id" name="category_id">
+                <label for="subcategory_name">Subcategory Name:</label>
+                <input type="text" id="subcategory_name" name="subcategory_name" required>
+                <label for="subcategory_description">Subcategory Description:</label>
+                <textarea id="subcategory_description" name="subcategory_description" required></textarea>
+                <button type="submit">Add Subcategory</button>
+            </form>
+        </div>
+    </div>
+</body>
+{% endblock %}

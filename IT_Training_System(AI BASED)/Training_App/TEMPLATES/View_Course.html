@@ -1,0 +1,68 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}  
+      <script>alert("{{ message }}")</script> 
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% load static %}
+<div style="background-image: url('/media/your-background-image.jpg'); background-repeat:no-repeat; background-size:cover; min-height:687px; width:100%; height:auto;">
+  <header>
+    <h1>View Courses</h1>
+  </header>
+
+  <div class="row" style="padding-top:50px;">
+       <h3>Enrolled Courses</h3>
+      {% for course in details %}
+        <div class="col-sm-4 mb-3 mb-sm-0">
+          <div class="card bg-dark" style="min-height: 250px;">
+            <div class="card-body">
+              <h2 style="color:white">{{ course.title }}</h2>
+              <p class="card-text text-white">{{ course.description }}</p>
+              <a href="/View_Lectures/{{ course.id }}" class="btn btn-primary">Lectures</a>
+              <a href="/View_Assignments/{{ course.id }}" class="btn btn-primary">Assignments</a>
+              <a href="/View_Quiz/{{ course.id }}" class="btn btn-primary">Quiz</a>
+              <a href="/Progress_Tracking/{{ course.id }}" class="btn btn-primary">Progress</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if recommended_courses %}
+    <div class="row" style="padding-top:30px;">
+      <h3>Recommended Courses</h3>
+      {% for course in recommended_courses %}
+        <div class="col-sm-4 mb-3 mb-sm-0">
+          <div class="card bg-dark" style="min-height: 250px;">
+            <div class="card-body">
+              <h2 style="color:white">{{ course.title }}</h2>
+              <p class="card-text text-white">{{ course.description }}</p>
+              <a href="{% url 'Enroll' course.id %}" class="btn btn-primary">Enroll</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row" style="padding-top:30px;">
+      <h3>Courses you may like</h3>
+      {% for course in random_courses %}
+        <div class="col-sm-4 mb-3 mb-sm-0">
+          <div class="card bg-dark" style="min-height: 250px;">
+            <div class="card-body">
+              <h2 style="color:white">{{ course.title }}</h2>
+              <p class="card-text text-white">{{ course.description }}</p>
+              <a href="{% url 'Enroll' course.id %}" class="btn btn-primary">Enroll</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

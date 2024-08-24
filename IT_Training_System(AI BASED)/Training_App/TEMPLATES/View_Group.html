@@ -1,0 +1,47 @@
+{% extends 'Base.html'%}
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}
+      <script>alert("{{ message }}")</script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% load static %}
+
+<div style="min-height:687px;height:auto;">
+
+<style>
+  th,tr{
+    text-align: center;
+  }
+</style>
+
+<div class="container" style="padding-top:50px;">
+  <table class="table table-dark table-hover table-stripped table-bordered">
+    <thead>
+      <th>ID</th>
+      <th>Group Name</th>
+      <th>Action</th>
+    </thead>
+
+    <tbody>
+      {%for i in details%}
+      <tr>
+        <td>{{i.id}}</td>
+        <td>{{i.Group_id.group_name}}</td>
+        <td>
+          <a href="/View_Chat/{{i.Group_id.id}}" class="btn btn-warning">View Chat</a>
+        </td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+</div>
+
+
+</div>
+
+
+{% endblock %}

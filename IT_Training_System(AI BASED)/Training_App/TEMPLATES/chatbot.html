@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-image: url('/media/home.jpg'); background-color: cadetblue; background-repeat: no-repeat; background-size: cover; height: 100vh; width: 100%;">
+  <div class="container" style="width: 45%; padding-top: 20px; background-color: lightpink; height: 90vh; margin-top: 20px; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;">
+    
+    <div id='chat-container' style="flex: 1; display: flex; flex-direction: column;">
+      <div id="chat" style="flex: 1; overflow-y: auto; padding: 10px; background-color: #fff; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <!-- Chat messages will appear here -->
+      </div>
+      
+      <form class="form-signin" id="chat-form" style="display: flex; margin-top: 10px; padding: 10px;">
+        {% csrf_token %}
+        <input type="text" class="form-control" required="" id="inputtext" name="inputtext" placeholder="Type here...." style="flex: 1; border-radius: 5px 0 0 5px; margin-right: 10px;">
+        <button type="button" id="send-button" class="btn btn-lightpink" style="border-radius: 0 5px 5px 0; padding: 0 20px;">Send</button>
+      </form>
+    </div>
+    
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#send-button').click(function() {
+      var text = $("#inputtext").val();
+      if (text !== "") {
+        addMessage(text, 'user');
+        $("#inputtext").val(""); // Clear input after sending
+
+        $.ajax({
+          type: "POST",
+          url: '{% url 'Message' %}',  // Ensure this matches your URL pattern name
+          data: {
+            'text': text,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          success: function(data) {
+            var reply = data["respond"];
+            var reply1 = data["respond1"];
+            var url = data["link"];
+
+            if (reply1 === "True") {
+              addMessage(reply, 'bot', url);
+            } else if (reply1 === "done") {
+              addMessage(reply, 'bot', url, true);
+            } else {
+              addMessage(reply, 'bot');
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error("Error:", error);
+          }
+        });
+      } else {
+        alert("Please enter a message");
+      }
+    });
+
+    function addMessage(message, sender, url, isLink) {
+      var messageHtml = "";
+      if (sender === 'user') {
+        messageHtml = "<div class='message user-message' style='background-color: aliceblue; margin: 5px 0; padding: 10px; border-radius: 10px; box-shadow: 0 0 5px rgba(0,0,0,0.1);'>" + message + "</div>";
+      } else {
+        messageHtml = "<div class='message bot-message' style='background-color: antiquewhite; margin: 5px 0; padding: 10px; border-radius: 10px; box-shadow: 0 0 5px rgba(0,0,0,0.1);'>" + message;
+        if (isLink) {
+          messageHtml += "<br><a href='" + url + "' target='_blank' style='color: black;'>Click here</a>";
+        }
+        messageHtml += "</div>";
+      }
+      $("#chat").append(messageHtml);
+      $("#chat").scrollTop($("#chat")[0].scrollHeight); // Scroll to bottom
+    }
+  });
+</script>
+{% endblock %}

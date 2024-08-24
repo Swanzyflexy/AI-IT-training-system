@@ -1,0 +1,185 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Add Assignments for {{course}} </h1>
+</header>
+
+
+<style>
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 700px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 0px
+}
+
+.box > div label{
+    color: white;
+}    
+
+
+
+.form-label {
+  font-weight: 600;
+}
+
+.input-group-text {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.input-group-text:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+/* Custom CSS for tick animation */
+.tick-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it's on top of everything */
+}
+
+.tick-animation {
+  font-size: 100px;
+  color: #fff;
+}
+
+th,tr{
+    text-align: center;
+}
+
+</style>
+
+    <div class="box">
+        <div class="p-3 mb-5">
+            <center>
+                <h1 class="text-white">Add Assignment</h1>
+            </center>
+                <div class="container">
+                <div class="row justify-content-center">
+                  <div class="col-md-8">
+                    <form id="assignmentForm" method="POST" action="/Add_Assignments/{{course_id}}" enctype="multipart/form-data">
+                        {%csrf_token%}
+                      <div class="mb-3">
+                        <label for="fileInput" class="form-label">Upload File</label>
+                        <div class="input-group">
+                          <input type="file" class="form-control" name="file" id="fileInput" accept=".pdf" required>
+                          <label class="input-group-text" for="fileInput">
+                            <i class="bi bi-upload"></i>
+                          </label>
+                        </div>
+                      </div>
+                      <button type="button" id="submitButton" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
+                </div>
+                </div>
+        </div>
+    </div>
+
+<div id="tickContainer" class="tick-container" style="display: none;">
+  <div class="tick-animation">
+    <i class="bi bi-check-circle"></i>
+  </div>
+</div>
+
+
+<div class="container">
+    <table class="table table-dark table-hover table-stripped table-bordered">
+        <thead>
+            <th>Assignment ID</th>
+            <th>Teacher File</th>
+            <th>View Student Assignments</th>
+        </thead>
+
+        <tbody>
+            {%for i in details%}
+            <tr>
+                <td>{{i.id}}</td>
+                <td>
+                    <a href="{{ i.teacher_file.url }}" class="btn btn-primary" target="_blank">
+                        View File 
+                        <i class="bi bi-file-earmark-pdf"></i>
+                    </a>
+
+                    <a href="{{ i.teacher_file.url }}" download="" class="btn btn-warning" title="Download File">
+                        <i class="bi bi-file-earmark-arrow-down"></i>
+                    </a>
+                </td>
+              
+                <td>
+                    <a href="/View_Student_Assignments/{{i.id}}" class="btn btn-success">View Student Assignments <i class="bi bi-eye-fill"></i></a>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<script>
+document.getElementById('submitButton').addEventListener('click', function() {
+  var fileInput = document.getElementById('fileInput');
+  if (fileInput.files.length === 0) {
+    alert('Please select a PDF file.');
+    return;
+  }
+
+  var button = this;
+  button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+  setTimeout(function() {
+    // button.innerHTML = '<span class="bi bi-check-circle"></span> Submitted';
+    document.getElementById('tickContainer').style.display = 'flex'; // Show the tick animation
+    setTimeout(function() {
+      document.getElementById('assignmentForm').submit();
+    }, 1000); // Change the time according to your requirement
+  }, 1000); // Change the time according to your requirement
+});
+</script>
+
+</div>
+
+{% endblock %}

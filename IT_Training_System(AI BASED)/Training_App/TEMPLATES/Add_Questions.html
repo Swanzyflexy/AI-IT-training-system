@@ -1,0 +1,270 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Add Questions for Quiz</h1>
+</header>
+
+
+
+
+<style>
+        .box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.box > div { /*The > denotes only the first or immediate child will be affected*/
+  width: 500px;
+  height: auto;
+  /*border: dotted;
+*/
+  background-color: #36454F;
+  border-radius: 5px
+}
+
+.box > div label{
+    color: white;
+}
+
+th,tr{
+    text-align: center;
+}
+
+
+</style>
+
+
+<!-- Modal for Update button -->
+<!-- View Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Teacher Details</h5> 
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             <div class="container">
+        <form class="row g-3" method="POST" action="/Update_Quiz/" enctype="multipart/form-data">
+            {% csrf_token %}
+
+
+            <div class="col-md-6">
+                    <label  class="form-label">Question ID</label>
+                    <input type="text" class="form-control" name="viewid" id="viewid"  readonly>
+              </div>
+
+              <div class="col-md-6">
+                    <label  class="form-label">Title ID</label>
+                    <input type="text" class="form-control" name="viewname" id="viewname"  readonly>
+              </div>
+
+              <div class="col-md-12">
+                    <label for="inputPassword4" class="form-label">Question</label>
+                    <input type="text" class="form-control" name="viewage" id="viewage"  required>
+
+                
+              </div>
+
+              <div class="col-12">
+                    <label for="inputAddress" class="form-label">Option 1</label>
+                    <input type="text" class="form-control"  
+                    name="viewaddress" id="viewaddress"   required>
+              </div>
+
+
+              <div class="col-md-12">
+                  <label class="form-label">Option 2</label>
+                  <input type="text" class="form-control" id="viewphone" name="phone" required>
+              </div>
+
+              <div class="col-md-6">
+                  <label class="form-label">Option 3</label>
+                  <input type="text" class="form-control" id="viewbirth_date" name="option3"  required>
+              </div>
+
+
+              <div class="col-md-6">
+                  <label class="form-label">Option 4</label>
+                  <input type="text" class="form-control" id="viewgender" name="option4" required>
+              </div>
+
+             
+              <div class="col-md-6">
+                   <label class="form-label">Answer</label>
+                   <input type="text" class="form-control" name="answer" id="viewUsername" required>
+              </div>
+
+              
+            <input class="btn btn-secondary" type="submit"  name="">
+
+        </form>
+    </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------- -->
+
+
+<div class="accordion accordion-flush " id="accordionFlushExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+        Edit Questions 
+      </button>
+    </h2>
+    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body" style="background-color:#6082B6;">
+          
+            <table class="table table-dark table-hover table-stripped table-bordered">
+                <thead>
+                    <th>Question ID</th>
+                    <th>Title ID</th>
+                    <th>Question</th>
+                    <th>Q1</th>
+                    <th>Q2</th>
+                    <th>Q3</th>
+                    <th>Q4</th>
+                    <th>Answer</th>
+                    <th>Action</th>
+                </thead>
+
+                <tbody>
+                    {%for i in details%}
+                    <tr>
+                        <td>{{i.id}}</td>
+                        <td>{{i.title_id.id}}</td>
+                        <td>{{i.question}}</td>
+                        <td>{{i.option1}}</td>
+                        <td>{{i.option2}}</td>
+                        <td>{{i.option3}}</td>
+                        <td>{{i.option4}}</td>
+                        <td>{{i.answer}}</td>
+                        <td>
+                            <input type="button" class="btn btn-warning "id="{{i.id}}
+                                                                    ${{i.title_id.id}}
+                                                                    ${{i.question}}
+                                                                    ${{i.option1}}
+                                                                    ${{i.option2}}
+                                                                    ${{i.option3}}
+                                                                    ${{i.option4}}
+                                                                    ${{i.answer}}"
+                                 value="Update" onclick="Update(this)" style="width: 100%;">
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+          
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+        <div class="shadow-lg p-3 mb-5 ">
+             <center><h3 style="color: white;">Questions</h3> </center>
+            <form method="POST" action="/Add_Questions/{{quiz_id}}" enctype="multipart/form-data" style="padding:25px;border: 2px solid;">
+                {% csrf_token %}
+
+
+                <div class="row mb-3">
+                    <label class="form-label">Quiz ID</label>
+                    <input type="text" class="form-control" value="{{quiz_id}}"  name="" readonly>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="form-label">Question</label>
+                    <input type="text" class="form-control"  name="question" required>
+                </div>
+
+                <div class="row mb-3">
+                    <label class="form-label">Option 1</label>
+                    <input type="text" class="form-control"  name="Option_1" required>
+                </div>
+
+                 <div class="row mb-3">
+                    <label class="form-label">Option 2</label>
+                    <input type="text" class="form-control"  name="Option_2" required>
+                </div>
+
+                 <div class="row mb-3">
+                    <label class="form-label">Option 3</label>
+                    <input type="text" class="form-control"  name="Option_3" required>
+                </div>
+
+                 <div class="row mb-3">
+                    <label class="form-label">Option 4</label>
+                    <input type="text" class="form-control"  name="Option_4" required>
+                </div>
+
+
+                <div class="row mb-5">
+                    <label class="form-label">Answer</label>
+                    <input type="text" class="form-control"  name="answer" required>
+                </div>
+
+
+
+                <div class="row mb-3">
+                    <input type="submit" class="btn btn-success" style="width:100%" name="">
+                </div>
+            </form>
+        </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+function Update(me){
+        $('#myModal2').modal('show');
+        var id          = me.id;
+        var str         = id.split("$");
+        var ids         = str[0];
+        var title_id        = str[1];
+        var question         = str[2];
+        var option1      = str[3];
+        var option2      = str[4];
+        var option3      = str[5];
+        var option4      = str[6];
+        var answer      = str[7];
+
+
+        document.getElementById("viewid").value       = ids;
+        document.getElementById("viewname").value     = title_id;
+        document.getElementById("viewage").value      = question;
+        document.getElementById("viewaddress").value   = option1;
+        document.getElementById("viewphone").value  = option2;
+        document.getElementById("viewbirth_date").value   = option3;
+        document.getElementById("viewgender").value   = option4;
+        document.getElementById("viewUsername").value   = answer;
+
+        
+        
+    }
+
+</script>
+
+
+
+
+
+
+
+{% endblock %}

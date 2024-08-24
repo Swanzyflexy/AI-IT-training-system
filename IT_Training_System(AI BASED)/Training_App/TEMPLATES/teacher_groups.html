@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="height:500px;">
+    <h2 style="text-align: center;">Your Groups</h2>
+    {% if grouped_data %}
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Group Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category, subcategories in grouped_data.items %}
+                        {% for subcategory, groups in subcategories.items %}
+                            {% for group in groups %}
+                            <tr>
+                                {% if forloop.first %}
+                                <td rowspan="{{ subcategories|length }}">{{ category.category_name }}</td>
+                                {% endif %}
+                                <td>{{ subcategory.subcategory_name }}</td>
+                                <td>{{ group.group_name }}</td>
+                                <td>
+                                    <!-- Ensure course_id and group_id are correct -->
+                                    <a href="{% url 'View_Students' course_id=group.course.id group_id=group.id %}" class="btn btn-warning btn-sm">View Students</a>
+                                    <a href="{% url 'View_Group_Members' group_id=group.id %}" class="btn btn-info btn-sm">View Members</a>
+                                    <a href="{% url 'View_Chat' group_id=group.id %}" class="btn btn-info btn-sm">View Chat</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No groups found.</p>
+    {% endif %}
+</div>
+{% endblock %}

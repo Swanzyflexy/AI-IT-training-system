@@ -1,0 +1,48 @@
+{% extends 'Base.html' %}
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags %}
+      <script>alert("{{ message }}")</script>
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% load static %}
+
+<style>
+  /* Add your styles here */
+</style>
+
+<div style="min-height:687px;height:auto;">
+  <header>
+    <h1>Add Enrolled Students to Group</h1>
+  </header>
+  <br>
+
+  <div class="container">
+    <table class="table table-dark table-hover table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Students Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in details %}
+        <tr>
+          <td>{{ i.student.full_name }}</td>
+          <td>
+            {% if i.student.id in group_members %}
+            <span class="btn btn-secondary">Already in Group</span>
+            {% else %}
+            <a href="{% url 'Add_Students' i.student.id group_id course_id %}" class="btn btn-success">Add To Group</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

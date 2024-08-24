@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Enrollment Report</h2>
+    {% if enrollments %}
+        <canvas id="enrollmentChart"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var ctx = document.getElementById('enrollmentChart').getContext('2d');
+                var enrollmentData = {
+                    labels: [
+                        {% for enrollment in enrollments %}
+                            "{{ enrollment.month }}",
+                        {% endfor %}
+                    ],
+                    datasets: [{
+                        label: 'Enrollment Count',
+                        data: [
+                            {% for enrollment in enrollments %}
+                                {{ enrollment.count }},
+                            {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                        borderColor: 'rgba(255, 255, 255, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var enrollmentChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: enrollmentData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: 'white' // Change y-axis ticks color to white
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: 'white' // Change x-axis ticks color to white
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' // Change legend text color to white
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    {% else %}
+        <p>No enrollment data available.</p>
+    {% endif %}
+</div>
+{% endblock %}

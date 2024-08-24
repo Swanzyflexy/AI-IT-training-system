@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Feedback</h1>
+    
+    <form method="post" action="{% url 'feedback' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="feedback">Your Feedback:</label>
+            <textarea class="form-control" id="feedback" name="feedback" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <h2 class="mt-5">All Feedbacks</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Feedback</th>
+                <th>Sentiment</th>
+                <th>Remarks</th>
+                <th>Admin Reply</th>
+                {% if  request.session.type_id == 'Admin' %}
+                <th>Reply</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedbacks %}
+            <tr>
+                <td>{{ feedback.student.full_name }}</td>
+                <td>{{ feedback.feedback }}</td>
+                <td>{{ feedback.sentiment }}</td>
+                <td>{{ feedback.remarks }}</td>
+                <td>{{ feedback.admin_reply }}</td>
+                {% if  request.session.type_id == 'Admin' %}
+                <td>
+                    <form method="post" action="{% url 'reply_feedback' feedback.id %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" name="reply" rows="2" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Reply</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

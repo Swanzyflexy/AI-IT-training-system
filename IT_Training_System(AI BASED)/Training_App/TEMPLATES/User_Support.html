@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>User Feedback</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Feedback</th>
+                <th>Sentiment</th>
+                <th>Remarks</th>
+                <th>Admin Reply</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feedback in feedbacks %}
+            <tr>
+                <td>{{ feedback.student }}</td>
+                <td>{{ feedback.feedback }}</td>
+                <td>{{ feedback.sentiment }}</td>
+                <td>{{ feedback.remarks }}</td>
+                <td>{{ feedback.admin_reply }}</td>
+                <td>
+                    <a href="{% url 'reply_feedback' feedback.pk %}" class="btn btn-primary btn-sm">Reply</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

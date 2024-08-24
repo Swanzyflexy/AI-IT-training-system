@@ -1,0 +1,249 @@
+{% extends 'Base.html'%}
+{% block content%}
+{% if messages %}
+
+{% for message in messages %}
+{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+
+{% endfor %}
+
+{% endif %}
+{%load static%}
+<div style="background-image:  url('/media/.jpg'); background-repeat:no-repeat;background-size:cover;  min-height:687px; width:100%;height: auto;">
+
+<header>
+    <h1>Add Lectures for {{course}}</h1>
+</header>
+
+
+<style>
+
+</style>
+
+
+<!-- Modal for view button -->
+<!-- View Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <header style="width:100%;">
+            <h1>Add Lecture Details</h1>
+        </header>
+      </div>
+      	<div class="modal-body">
+            <div class="container">
+        	<form class="row g-3" method="POST" action="{% url 'Add_Lectures' course_id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+            	<input hidden type="text" name="course_id" value="{{course_id}}">
+
+            	<div class="mb-3">
+                    <label for="courseName" class="form-label">Lecture Name</label>
+                        <div class="input-group">
+                            <input type="text" min="1" class="form-control" id="lecture_name" name="lecture_name">
+                            <span class="input-group-text"><i class="bi bi-list-ol"></i></span>
+                        </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="courseName" class="form-label">Select Video</label>
+                        <div class="input-group">
+                            <input type="file" accept=".mp4" class="form-control" id="video" name="video">
+                            <span class="input-group-text"><i class="bi bi-camera-video"></i></span>
+                        </div>
+                </div>
+
+
+                <div class="mb-3">
+                        <label  class="form-label">Lecture Description</label>
+                        <div class="input-group">
+                            <textarea name="Description" class="form-control"></textarea>
+                            <span class="input-group-text"><i class="bi bi-file-text"></i></span>
+                        </div>
+                </div>
+
+
+                <input type="submit" class="btn btn-info" name="" value="Add Lecture" width="100%">
+              
+      			</form>
+    		</div>
+      	</div>
+    </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------- -->
+<!-- Modal for view button -->
+<!-- View Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lecture Details</h5> 
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+             <div class="container">
+        <form class="row g-3" method="POST" action="/Update_Lecture/" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input hidden  type="text" id="c_id" name="c_id">
+              
+            <label class="form-label">Course</label>
+            <input class="form-control" type="text" value="" id="course" name="course" readonly>
+
+            <label class="form-label">Lecture id</label>
+            <input class="form-control" type="text" value="" id="id" name="id" readonly>
+
+            <label class="form-label">Lecture no</label>
+            <input class="form-control" type="" id="lecture" name="lecture">
+
+            <label class="form-label">Teacher</label>
+            <input class="form-control" type="text" value="" id="teacher_id" name="teacher_id">
+
+            <label class="form-label">Lecture Description</label>
+            <input class="form-control" type="text" value="" id="lecture_description" name="lecture_description">
+
+            <label class="form-label">Video File</label>
+            <video class="form-control" height="200px" width="100%" src="" id="video_file" class="object-fit-fill" controls autoplay></video>
+
+            <div class="mb-3">
+                    <label for="courseName" class="form-label">Select Video</label>
+                        <div class="input-group">
+                            <input type="file" accept=".mp4" class="form-control" id="new_video" name="new_video">
+                            <span class="input-group-text"><i class="bi bi-camera-video"></i></span>
+                        </div>
+           	</div>
+
+           	<input type="submit" name="">
+
+
+        </form>
+    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------- -->
+
+
+<div class="container">
+
+    <div style="display:flex;justify-content: right;align-content: right;padding-top: 20px;">
+        <input type="button" class="btn btn-secondary" id="" value="Add Lectures" onclick="View(this)">
+        &nbsp;
+        <a href="/Create_Group/{{course_id}}" class="btn btn-primary">Create Group</a>
+
+
+    </div>
+    <br>
+    <br>
+
+
+
+    <table class="table table-dark table-stripped table-bordered table-hover">
+        <thead>
+            <th>ID</th>
+            <th>Lecture no</th>
+            <th>Lecture Name</th>
+            <th>Teacher Id</th>
+            <th>Lecture description</th>
+            <th>Video File</th>
+            <th>Duration</th>
+            <th colspan="3">Actions</th>
+        </thead>
+ 
+        <tbody>
+            {%for i in details%}
+            <tr>
+            	<td>{{i.id}}</td>
+                <td><i class="bi bi-skip-end-circle-fill"></i> 	{{i.lecture_no}}</td>
+                <td>{{i.lecture_name}}</td>
+                <td>{{i.teacher_id.full_name}}</td>
+                <td>{{i.lecture_description}}</td>
+                <td>
+                	<video height="200px" width="100%" src="{{i.video_file.url}}" class="object-fit-fill" controls autoplay></video>
+                </td>
+                <td>{{i.duration}}</td>
+
+                 <td>
+                    <input type="button" class="btn btn-warning "id="{{i.id}}
+                                                            ${{i.lecture_no}}
+                                                            ${{i.course_id.title}}
+                                                            ${{i.teacher_id.full_name}}
+                                                            ${{i.lecture_description}}
+                                                            ${{i.video_file.url}}
+                                                            ${{i.course_id.id}}"
+                         value="Update" onclick="Update(this)" style="width: 100%;">
+                </td>
+
+                <td >
+                    <a type="button" class="btn btn-danger" href="/Delete_Lecture/{{i.id}}" style="width: 100%;">Delete</a>
+                </td>
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+
+    function View(me){
+        $('#myModal1').modal('show');
+
+         
+    }
+
+    function Update(me){
+        $('#myModal2').modal('show');
+
+        var id          = me.id;
+        var str         = id.split("$");
+        var ids         = str[0];
+        var lecture_no        = str[1];
+        var course_id         = str[2];
+        var teacher_id      = str[3];
+        var lecture_description      = str[4];
+        var video_file      = str[5];
+        var course      = str[6];
+       
+
+        document.getElementById("id").value       = ids;
+        document.getElementById("lecture").value     = lecture_no;
+        document.getElementById("course").value      = course_id;
+        document.getElementById("teacher_id").value   = teacher_id;
+        document.getElementById("lecture_description").value  = lecture_description;
+        document.getElementById("video_file").src   = video_file;
+        document.getElementById("c_id").value   = course;
+
+        console.log('Lecture ID :',ids)
+        console.log('lecture_no :',lecture_no)
+        console.log('course Name :',course_id)
+        console.log('teacher_id :',teacher_id)
+        console.log('lecture_description :',lecture_description)
+        console.log('video_file :',video_file)
+        console.log('course id :',c_id)
+        
+        
+    }
+
+         
+  
+
+
+
+    </script>
+
+{% endblock %}
